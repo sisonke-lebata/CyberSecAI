@@ -1,6 +1,6 @@
 # CyberSec Security Assistant
 
-A WPF-based interactive cybersecurity chatbot that helps users understand security best practices, threat prevention, and protective measures.
+A WPF-based interactive cybersecurity chatbot that helps users understand security best practices, threat prevention, and protective measures
 
 ## Features
 
