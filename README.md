@@ -31,4 +31,4 @@ A WPF-based interactive cybersecurity chatbot that helps users understand securi
 3. Build the solution (Ctrl+Shift+B)
 4. Run the application (F5)
 
-Or using .NET CLI:
+Or using .NET CLI
