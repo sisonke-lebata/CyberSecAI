@@ -1,0 +1,379 @@
+﻿<Window x:Class="CyberSecAI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CyberSec AI — Advanced Cybersecurity Intelligence"
+        Height="820" Width="1180"
+        MinHeight="640" MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#050A14"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+
+        <!-- ── Neon cyan button base ── -->
+        <Style x:Key="BtnBase" TargetType="Button">
+            <Setter Property="Cursor"          Value="Hand"/>
+            <Setter Property="FontFamily"      Value="Segoe UI"/>
+            <Setter Property="FontWeight"      Value="Bold"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.80"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Cyan sidebar button -->
+        <Style x:Key="BtnCyan" TargetType="Button" BasedOn="{StaticResource BtnBase}">
+            <Setter Property="Background"  Value="#06131F"/>
+            <Setter Property="Foreground"  Value="#00E5FF"/>
+            <Setter Property="BorderBrush" Value="#00E5FF"/>
+            <Setter Property="Padding"     Value="12,7"/>
+            <Setter Property="FontSize"    Value="11"/>
+        </Style>
+
+        <!-- Neon blue send button -->
+        <Style x:Key="BtnSend" TargetType="Button" BasedOn="{StaticResource BtnBase}">
+            <Setter Property="Background"  Value="#041020"/>
+            <Setter Property="Foreground"  Value="#00B8FF"/>
+            <Setter Property="BorderBrush" Value="#00B8FF"/>
+            <Setter Property="Padding"     Value="24,10"/>
+            <Setter Property="FontSize"    Value="13"/>
+        </Style>
+
+        <!-- Red exit button -->
+        <Style x:Key="BtnRed" TargetType="Button" BasedOn="{StaticResource BtnBase}">
+            <Setter Property="Background"  Value="#180008"/>
+            <Setter Property="Foreground"  Value="#FF1744"/>
+            <Setter Property="BorderBrush" Value="#FF1744"/>
+            <Setter Property="Padding"     Value="12,7"/>
+            <Setter Property="FontSize"    Value="11"/>
+        </Style>
+
+        <!-- Topic number chip -->
+        <Style x:Key="TopicChip" TargetType="Button" BasedOn="{StaticResource BtnBase}">
+            <Setter Property="Background"       Value="#060F1C"/>
+            <Setter Property="Foreground"       Value="#0077AA"/>
+            <Setter Property="BorderBrush"      Value="#0A2035"/>
+            <Setter Property="Padding"          Value="7,4"/>
+            <Setter Property="FontSize"         Value="10"/>
+            <Setter Property="Margin"           Value="2"/>
+            <Setter Property="BorderThickness"  Value="1"/>
+        </Style>
+
+        <!-- Dark input box -->
+        <Style x:Key="InputStyle" TargetType="TextBox">
+            <Setter Property="Background"               Value="#060F1C"/>
+            <Setter Property="Foreground"               Value="#D0EFFF"/>
+            <Setter Property="CaretBrush"               Value="#00E5FF"/>
+            <Setter Property="BorderBrush"              Value="#00B8FF"/>
+            <Setter Property="BorderThickness"          Value="1,1,1,2"/>
+            <Setter Property="FontSize"                 Value="13"/>
+            <Setter Property="Padding"                  Value="12,10"/>
+            <Setter Property="SelectionBrush"           Value="#00B8FF"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontFamily"               Value="Consolas"/>
+        </Style>
+
+        <!-- ScrollBar slim dark style -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width"      Value="5"/>
+            <Setter Property="Background" Value="#050A14"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="62"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ═══════════════════════════════════════════════
+             TOP HEADER BAR
+        ═══════════════════════════════════════════════ -->
+        <Border Grid.Row="0"
+                Background="#060D1A"
+                BorderBrush="#00B8FF"
+                BorderThickness="0,0,0,1">
+            <Border.Effect>
+                <DropShadowEffect Color="#00B8FF" BlurRadius="18" ShadowDepth="0" Opacity="0.35"/>
+            </Border.Effect>
+            <Grid Margin="18,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Avatar + name -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="42" Height="42"
+                            Background="#041020"
+                            BorderBrush="#00E5FF"
+                            BorderThickness="2"
+                            CornerRadius="6"
+                            Margin="0,0,12,0">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#00E5FF" BlurRadius="14" ShadowDepth="0" Opacity="0.7"/>
+                        </Border.Effect>
+                        <Grid>
+                            <Viewbox Width="28" Height="28">
+                                <Canvas Width="100" Height="110">
+                                    <Path Data="M50,0 L100,20 L100,60 Q100,95 50,110 Q0,95 0,60 L0,20 Z"
+                                          Fill="#041020" Stroke="#00E5FF" StrokeThickness="5"/>
+                                    <Rectangle Canvas.Left="33" Canvas.Top="55"
+                                               Width="34" Height="26"
+                                               Fill="#00E5FF" RadiusX="4" RadiusY="4"/>
+                                    <Path Data="M38,55 L38,44 Q38,30 50,30 Q62,30 62,44 L62,55"
+                                          Stroke="#00E5FF" StrokeThickness="6" Fill="Transparent"/>
+                                    <Ellipse Canvas.Left="44" Canvas.Top="61"
+                                             Width="12" Height="10" Fill="#041020"/>
+                                    <Rectangle Canvas.Left="47" Canvas.Top="69"
+                                               Width="6" Height="8" Fill="#041020"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="CYBERSEC AI"
+                                   Foreground="#00E5FF"
+                                   FontSize="17" FontWeight="Bold"
+                                   FontFamily="Consolas">
+                            <TextBlock.Effect>
+                                <DropShadowEffect Color="#00E5FF" BlurRadius="10" ShadowDepth="0" Opacity="0.6"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                        <TextBlock Text="Advanced Cybersecurity Intelligence"
+                                   Foreground="#1A4A5A" FontSize="9" FontFamily="Consolas"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Centre: status indicators -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Ellipse Width="7" Height="7" Fill="#00FF87"
+                             VerticalAlignment="Center" Margin="0,0,6,0">
+                        <Ellipse.Effect>
+                            <DropShadowEffect Color="#00FF87" BlurRadius="8" ShadowDepth="0"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
+                    <TextBlock Text="SYSTEM ONLINE"
+                               Foreground="#00FF87" FontSize="10" FontWeight="Bold"
+                               FontFamily="Consolas" Margin="0,0,24,0"/>
+                    <Ellipse Width="7" Height="7" Fill="#FF1744"
+                             VerticalAlignment="Center" Margin="0,0,6,0">
+                        <Ellipse.Effect>
+                            <DropShadowEffect Color="#FF1744" BlurRadius="8" ShadowDepth="0"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
+                    <TextBlock Text="THREAT MONITORING"
+                               Foreground="#FF1744" FontSize="10" FontWeight="Bold"
+                               FontFamily="Consolas"/>
+                </StackPanel>
+
+                <!-- Right: session status -->
+                <TextBlock Grid.Column="2"
+                           x:Name="StatusLabel"
+                           Text="Awaiting connection..."
+                           Foreground="#1A4A5A" FontSize="11"
+                           FontFamily="Consolas" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════════════════════════════════════════
+             MAIN BODY
+        ═══════════════════════════════════════════════ -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="262"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ── LEFT SIDEBAR ── -->
+            <Border Grid.Column="0"
+                    Background="#060D1A"
+                    BorderBrush="#0A2035"
+                    BorderThickness="0,0,1,0">
+                <DockPanel LastChildFill="True">
+
+                    <!-- Sidebar heading / session log -->
+                    <Border DockPanel.Dock="Top"
+                            Margin="12,14,12,0" Padding="10,8"
+                            Background="#041020"
+                            BorderBrush="#00B8FF" BorderThickness="1"
+                            CornerRadius="4">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#00B8FF" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <TextBlock Text="◈  SESSION LOG"
+                                       Foreground="#00B8FF" FontSize="9" FontWeight="Bold"
+                                       FontFamily="Consolas" Margin="0,0,0,6"/>
+                            <TextBlock x:Name="MemoryLabel"
+                                       Text="No data recorded."
+                                       Foreground="#1A4A5A" FontSize="10"
+                                       FontFamily="Consolas"
+                                       TextWrapping="Wrap" LineHeight="16"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Topics label -->
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="◈  TOPIC MODULES"
+                               Foreground="#1A4A5A" FontSize="9" FontWeight="Bold"
+                               FontFamily="Consolas" Margin="14,12,14,4"/>
+
+                    <!-- Topic chips -->
+                    <ScrollViewer DockPanel.Dock="Top"
+                                  VerticalScrollBarVisibility="Auto"
+                                  MaxHeight="290" Margin="6,0,6,0">
+                        <WrapPanel x:Name="TopicPanel" Margin="4"/>
+                    </ScrollViewer>
+
+                    <!-- Bottom action buttons -->
+                    <StackPanel DockPanel.Dock="Bottom" Margin="10,0,10,14">
+                        <Rectangle Height="1" Fill="#0A2035" Margin="0,8,0,10"/>
+                        <Button x:Name="BtnClear"
+                                Content="⬜  Clear Chat"
+                                Style="{StaticResource BtnCyan}"
+                                Margin="0,0,0,5"
+                                Click="BtnClear_Click"/>
+                        <Button x:Name="BtnHelp"
+                                Content="≡  Topic Menu"
+                                Style="{StaticResource BtnCyan}"
+                                Margin="0,0,0,5"
+                                Click="BtnHelp_Click"/>
+                        <Button x:Name="BtnMemory"
+                                Content="◈  What Do You Remember?"
+                                Style="{StaticResource BtnCyan}"
+                                Margin="0,0,0,5"
+                                Click="BtnMemory_Click"/>
+                        <Button x:Name="BtnExit"
+                                Content="✕  Disconnect"
+                                Style="{StaticResource BtnRed}"
+                                Click="BtnExit_Click"/>
+                    </StackPanel>
+
+                </DockPanel>
+            </Border>
+
+            <!-- ── RIGHT CHAT AREA ── -->
+            <!-- FIX: removed inline Background="#050A14" attribute; -->
+            <!--      Background is now set solely via <Grid.Background> below -->
+            <Grid Grid.Column="1">
+                <Grid.Background>
+                    <DrawingBrush TileMode="Tile" Viewport="0,0,40,40" ViewportUnits="Absolute">
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing Brush="#050A14">
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0,0,40,40"/>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="#04080F" Thickness="0.5"/>
+                                    </GeometryDrawing.Pen>
+                                    <GeometryDrawing.Geometry>
+                                        <GeometryGroup>
+                                            <LineGeometry StartPoint="40,0" EndPoint="40,40"/>
+                                            <LineGeometry StartPoint="0,40" EndPoint="40,40"/>
+                                        </GeometryGroup>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Grid.Background>
+
+                <ScrollViewer x:Name="ChatScroll"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="18,14,18,14">
+                    <StackPanel x:Name="ChatPanel" Margin="0,4,0,4"/>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+
+        <!-- ═══════════════════════════════════════════════
+             INPUT BAR
+        ═══════════════════════════════════════════════ -->
+        <Border Grid.Row="2"
+                Background="#060D1A"
+                BorderBrush="#00B8FF"
+                BorderThickness="0,1,0,0"
+                Padding="14,12">
+            <Border.Effect>
+                <DropShadowEffect Color="#00B8FF" BlurRadius="16" ShadowDepth="0" Opacity="0.2" Direction="90"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Terminal prompt indicator -->
+                <Border Grid.Column="0"
+                        Background="#041020"
+                        BorderBrush="#00B8FF" BorderThickness="1"
+                        Padding="12,0" Margin="0,0,10,0" CornerRadius="3">
+                    <TextBlock x:Name="PromptLabel"
+                               Text="&gt;_"
+                               Foreground="#00E5FF"
+                               FontSize="15" FontWeight="Bold"
+                               FontFamily="Consolas"
+                               VerticalAlignment="Center">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="#00E5FF" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </Border>
+
+                <TextBox Grid.Column="1"
+                         x:Name="UserInput"
+                         Style="{StaticResource InputStyle}"
+                         Height="46"
+                         KeyDown="UserInput_KeyDown"/>
+
+                <Button Grid.Column="2"
+                        x:Name="BtnSend"
+                        Content="SEND ▶"
+                        Style="{StaticResource BtnSend}"
+                        Height="46"
+                        Margin="10,0,0,0"
+                        Click="BtnSend_Click">
+                    <Button.Effect>
+                        <DropShadowEffect Color="#00B8FF" BlurRadius="12" ShadowDepth="0" Opacity="0.4"/>
+                    </Button.Effect>
+                </Button>
+            </Grid>
+        </Border>
+
+    </Grid>
+    </Window>
+   
+
+
+
